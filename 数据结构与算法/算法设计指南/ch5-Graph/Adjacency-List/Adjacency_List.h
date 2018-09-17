@@ -27,6 +27,13 @@ void read_graph(graph *g, bool directed);
 void insert_edge(graph *g, int x, int y, bool directed);
 void print_graph(graph *g);
 
+void print_graph(graph *g);
+void bfs(graph *g, int start);
+void process_vertex_early(int v);
+void process_vertex_late(int v);
+void process_edge(int x, int y);
+void find_path(int start, int end, int parents[]);
+
 void initialize_graph(graph *g, bool directed) {
     int i;
     g->nvertices = 0;
@@ -87,6 +94,116 @@ void print_graph(graph *g) {
         }
         printf("\n");
     }
+}
+
+
+
+bool processed[MAXV+1];     // 处理完
+bool discovered[MAXV+1];    // 已找到
+int parent[MAXV+1];
+
+
+void initialize_search(graph *g) {
+    int i;
+    for(i = 1; i <= g->nvertices; i++) {
+        processed[i] = discovered[i] = false; // 初始化为未发现
+        parent[i] = -1;
+    }
+}
+
+void bfs(graph *g, int start) {
+    queue q;
+    int v;      // 当前顶点
+    int y;      // 下一个顶点
+    edgenode *p;
+
+    init_queue(&q);
+    enqueue(&q, start);
+    discovered[start] = true;
+
+    while(empty_queue(&q) == false) {
+        v = dequeue(&q);
+        process_vertex_early(v);
+        processed[v] = true;
+        p = g->edges[v];
+        while(p != NULL) {
+            y = p->y;
+            if((processed[y] == false) || g->directed) {
+                process_edge(v, y);
+            }
+            if(discovered[y] == false) {
+                enqueue(&q, y);
+                discovered[y] = true;
+                parent[y] = v;
+            }
+            p = p->next;
+        }
+        process_vertex_late(v);
+    }
+}
+
+
+void process_vertex_early(int v) {
+
+}
+
+void process_vertex_late(int v) {
+    printf("processed vertex %d\n", v);
+}
+
+void process_edge(int x, int y) {
+    printf("processed edge (%d, %d)\n", x, y);
+}
+
+
+void find_path(int start, int end, int parents[]) {
+    if((start == end) || end == -1) {
+        printf("\n%d", start);
+    } else {
+        find_path(start, parents[end], parents);
+        printf(" %d", end);
+    }
+}
+
+
+int entry_time[MAXV+1];
+int exit_time[MAXV+1];
+int time;           
+bool finished = false;
+
+void dfs(graph *g, int v) {
+    edgenode *p;
+    int y;
+
+    if(finished)
+        return;
+
+    discovered[v] = true;
+    time++;
+    entry_time[v] = time;
+
+    process_vertex_early(v);
+
+    p = g->edges[v];
+    while(p != NULL) {
+        y = p->y;
+        if(discovered[y] == false) {
+            parent[y] = v;
+            process_edge(v, y);
+            dfs(g, y);
+        } else if((!processed[y]) || (g->directed)) {
+            process_edge(v, y);
+        }
+        if(finished)
+            return;
+        p = p->next;
+    }
+
+    process_vertex_late(v);
+    time++;
+    exit_time[v] = time;
+
+    processed[v] = true;
 }
 
 #endif
