@@ -291,7 +291,7 @@ int complement(int color) {
 
 + 数边会找到新顶点，而这种父子关系记录在`parent`数组中
 
-+ 反向边中一个端点是当前正在进行扩展的顶点，而另一个端点则是该顶点的祖先，所以这种边会指回到树中而不是扩展出新顶点
++ 反向边(图中的虚线)中一个端点是当前正在进行扩展的顶点，而另一个端点则是该顶点的祖先，所以这种边会指回到树中而不是扩展出新顶点
 
 ![](https://github.com/liu-jianhao/note/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/img/graph-tree2.png)
 
@@ -362,3 +362,97 @@ void process_edge(int x, int y) {
 
 关节点的连通度是1
 
+搜索树的根是一个特例，如果根有两个或两个以上的孩子，那么删除根会断开这些孩子，这样会使根成为一个关节点
+
+反向边可以看作安全线缆，它们将一个顶点连回给顶点的某个祖先，从`x`回到`y`之间树边路径上的所有顶点都不会是关节点
+
+```c
+int reachble_ancestor[MAXV+1]; // 从v可以到达的最老祖先
+int tree_out_degree[MAXV+1]; // 深度优先搜索中v的出度
+
+void process_vertex_early(int v) {
+    reachable_ancestor[v] = v;
+}
+```
+一旦我们遇到一条反向边能将我们带到从前从未遇见的更老的祖先时，我们便更新`reachable_ancestor[v]`。我们祖先的年龄可以根据它们的`entry_time`元素值来确定：
+```c
+void process_edge(int x, int y) {
+    int class;
+    class = edge_classification(x, y);
+    if(class == TREE)
+        tree_out_degree[X] = tree_out_degree[X] + 1;
+    if((class == BACK) && (parent[x] != y)) {
+        if(entry_time[y] < entry_time[reachable_ancestor[x]])
+            reachable_ancestor[x] = y;
+    }
+}
+```
+确定可达关系对顶点`v`是否是关节点有什么关系：
+1. 根割点——如果深度优先搜索树的跟有两个或两个以上的孩子，它肯定是一个关节点
+2. 桥割点——如果`v`可以到达的最老祖先是`v`本身，那么删除(parent[v], v)会断开图。显然`parent[v]`一定是关节点，因为它会将`v`从图中切除。顶点`v`也是一个关节点，但`v`若是深度优先搜索树的叶子节点除外，因为对于任何叶子节点来说，你剪掉它的时候不会有其他东西掉下来
+3. 父亲割点——如果`v`可以到达的最老祖先是`v`的父亲，那么删除这位父亲肯定会将`v`从树中割掉，但如果`v`的父亲是根除外
+
+
+
+
+```c
+void process_vertex_late(int v) {
+    bool root;
+    int time_v;
+    int time_parent;
+    if(parent[v] < 1) {
+        if(tree_out_degree[v] > 1) {
+            printf("root articulation vertex: %d \n", v);
+            return;
+        }
+        root = (parent[parent[v]] < 1);
+        if(!root) {
+            if((reachable_ancestor[v] == parent[v]))
+                printf("parent articulation vertex: %d \n", parent[v]);
+            if(reachable_ancestor[v] == v){
+                printf("brige articulation vertex: %d \n", parent[v]);
+                if(tree_out_degree[v] > 0)
+                    printf("bridge articulation vertex: %d \n", v);
+            }
+        }
+
+        time_v = entry_time[reachable_ancestor[v]];
+        time_parent = entry_time[reachable_ancestor[parent[v]]];
+
+        if(time_v < time_parent)
+            reachable_ancestor[parent[v]] = reachable_ancestor[v];
+    }
+}
+```
+
+
+
+### 有向图的深度优先搜索
+对于有向图，深度优先搜索中能为边标出的类型会更多样化：
++ 树边
++ 正向边
++ 反向边
++ 跨越边
+
+
+每条边可以根据其端点的状态、进入时间以及父子关系来正确地标记这条边：
+```c
+int edge_classification(int x, int y) {
+    if(parent[y] == x)
+        return TREE;
+    if(discovered[y] && !processed[y])
+        return BACK;
+    if(processed[y] && (entry_time[y] > entry_time[x]))
+        return FORWARD;
+    if(processed[y] && (entry_time[y] < entry_time[x]))
+        return  CROSS;
+    printf("Warning: unclassified edge (%d, %d)\n", x, y);
+}
+```
+
+
+#### 拓扑排序
+拓扑排序是有向无环图上重要的操作，它会将所有顶点排成一条直线并使所有的有向边都从左指向右
+
+
+每个有向无环图都至少有一个拓扑排序
