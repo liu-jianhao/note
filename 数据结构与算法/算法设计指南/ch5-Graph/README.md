@@ -1,6 +1,7 @@
 # 图
 
 ## 图的风格
+![](https://github.com/liu-jianhao/note/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/img/flavors.png)
 + 无向与有向
 + 加权与无权
 + 简单和非简单
@@ -126,7 +127,7 @@ void print_graph(graph *g) {
 在无向图的广度优先搜索中，我们会给每条边指定一个方向，如果顶点`u`找到了顶点`v`，那么边的方向就是从`u`到`v`，因此将`u`记为`v`的父亲
 
 因此一个无向图可以定义为一棵树，该树确定了树中从根到其他所有节点的最短路径
-
+![](https://github.com/liu-jianhao/note/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/img/graph-tree.png)
 
 ```c
 bool processed[MAXV+1];     // 处理完
@@ -292,6 +293,7 @@ int complement(int color) {
 
 + 反向边中一个端点是当前正在进行扩展的顶点，而另一个端点则是该顶点的祖先，所以这种边会指回到树中而不是扩展出新顶点
 
+![](https://github.com/liu-jianhao/note/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/img/graph-tree2.png)
 
 
 ```c
