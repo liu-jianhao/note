@@ -392,7 +392,7 @@ void process_edge(int x, int y) {
 2. 桥割点——如果`v`可以到达的最老祖先是`v`本身，那么删除(parent[v], v)会断开图。显然`parent[v]`一定是关节点，因为它会将`v`从图中切除。顶点`v`也是一个关节点，但`v`若是深度优先搜索树的叶子节点除外，因为对于任何叶子节点来说，你剪掉它的时候不会有其他东西掉下来
 3. 父亲割点——如果`v`可以到达的最老祖先是`v`的父亲，那么删除这位父亲肯定会将`v`从树中割掉，但如果`v`的父亲是根除外
 
-
+![](https://github.com/liu-jianhao/note/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/img/cut-node.png)
 
 
 ```c
@@ -433,6 +433,8 @@ void process_vertex_late(int v) {
 + 正向边
 + 反向边
 + 跨越边
+
+![](https://github.com/liu-jianhao/note/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/img/edge.png)
 
 
 每条边可以根据其端点的状态、进入时间以及父子关系来正确地标记这条边：
