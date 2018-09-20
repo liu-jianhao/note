@@ -457,4 +457,40 @@ int edge_classification(int x, int y) {
 拓扑排序是有向无环图上重要的操作，它会将所有顶点排成一条直线并使所有的有向边都从左指向右
 
 
+
 每个有向无环图都至少有一个拓扑排序
+
+拓扑排序可用深度优先搜索高效地完成。一个有向图是有向无环图当且仅当我们遇不到反向边，逆向依次记录处理完的顶点，便可找到有向无环图的一个拓扑排序
+
+对于每条有向边(x, y)，我们探查到顶点x遇到这条边时会发生什么情况：
+1. 如果y目前未发现，那么我们得开始从y的深度优先搜索，完成后才能继续处理x，因此y在x之前处理完，那么拓扑排序中x出现在y之前
+2. 如果y现在已找到但是没有处理完，那么(x, y)是一条反向边，而有向无环图中不能有这种边
+3. 如果y已经处理完，它将会在x处理完之前早已标记过，因此在拓扑排序关系中x出现与在y之前，事实上x也必须在y之前
+
+
+```c
+void process_vertex_late(int v) {
+    push(&sorted, v);
+}
+
+void process_edge(int x, int y) {
+    int class;
+    class = edge_classification(x, y);
+
+    if(class == BACK)
+        printf("Warning: directed cycle found, not a DAG\n");
+}
+
+void topsort(graph *g) {
+    int i;
+    init_stack(&sorted);
+
+    for(i = 1; i < g->nvertices; i++) {
+        if(discovered[i] == false)
+            dfs(g, i);
+    }
+
+    print_stack(&sorted);
+}
+```
+我们一旦评测完某个顶点所有的出边就将该顶点推入栈，位于栈顶的那个顶点永远不会有任何来自栈内顶点的入边，不断将栈中顶点弹出便可产生一个拓扑排序
