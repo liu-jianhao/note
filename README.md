@@ -20,6 +20,7 @@
 # 脚本语言(Python ＆ Shell)
 ## 学习资料
 1. 《Linux Shell脚本攻略（第3版）》
+2. 
 
 # 操作系统
 ## 学习资料
@@ -38,7 +39,7 @@
 1. 《MySQL必知必会》
 2. 《数据库系统基础教程》
 3. 《数据库系统实现》
-4. 《数据库基本概念》
+4. 《数据库系统概念》
 ## 课程 
 1. [CMU 15-445 / 645](https://15445.courses.cs.cmu.edu/fall2017/schedule.html)
 
@@ -48,3 +49,10 @@
 2. 《分布式实时处理系统 原理、架构与实现》
 ## 课程
 1. [MIT6.824](http://nil.csail.mit.edu/6.824/2016/schedule.html)
+
+# 调试(GDB)
+1. 《Debug.Hacks》
+
+# Go
+1. 《Go语言程序设计》
+2. 《Go Web编程》
