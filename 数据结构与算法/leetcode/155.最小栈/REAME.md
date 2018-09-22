@@ -8,6 +8,7 @@
 + top() -- 获取栈顶元素。
 + getMin() -- 检索栈中的最小元素。
 
+```
 示例:
 MinStack minStack = new MinStack();
 minStack.push(-2);
@@ -17,6 +18,7 @@ minStack.getMin();   --> 返回 -3.
 minStack.pop();
 minStack.top();      --> 返回 0.
 minStack.getMin();   --> 返回 -2.
+```
 
 ## 解题思路
 看到题目第一时间想到的是用一个变量保存最小值，但是这有个问题，如果当最小的元素被弹出栈了，怎么得到下一个最小的元素？
