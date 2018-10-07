@@ -3,6 +3,7 @@
 1. 《算法设计指南》
 2. leetcode
 3. 《程序员代码面试指南 IT名企算法与数据结构题目最优解》
+    + [C++版](https://github.com/liu-jianhao/Interview)
 4. 《剑指offer》
 
 # C++
@@ -12,6 +13,9 @@
 3. 《C++标准库》
 4. 《Boost程序库完全开发指南：深入C++准标准库》
 5. 《深度探索C++对象模型》
+
+# 设计模式
+[C++设计模式](https://github.com/liu-jianhao/Cpp-Design-Patterns)
 
 # Linux
 ## 学习资料
