@@ -9,7 +9,7 @@
 # C++
 ## 学习资料
 1. 《STL源码剖析》
-2. 《Effective Modern C++》
+2.  [《Effective Modern C++》](https://github.com/liu-jianhao/Effective-Modern-Cpp)
 3. 《C++标准库》
 4. 《Boost程序库完全开发指南：深入C++准标准库》
 5. 《深度探索C++对象模型》
