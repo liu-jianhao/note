@@ -14,6 +14,10 @@
 4. 《Boost程序库完全开发指南：深入C++准标准库》
 5. 《深度探索C++对象模型》
 
+## YouTube学习笔记
+1. [C++ Weekly](https://www.youtube.com/channel/UCxHAlbZQNFU2LgEtiqd2Maw)
+
+
 # 设计模式
 [C++设计模式](https://github.com/liu-jianhao/Cpp-Design-Patterns)
 
@@ -70,3 +74,6 @@
 1. 《Go语言程序设计》
 2. 《Go Web编程》
     + [chitchat](https://github.com/liu-jianhao/chitchat)
+
+# Git
+1. 《精通Git》
