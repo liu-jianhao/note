@@ -148,7 +148,8 @@ $ ./a.out
 $ clang++ memory.cpp -Wall -Wextra -fsanitize=memory
 $ ./a.out
 ==2216==WARNING: MemorySanitizer: use-of-uninitialized-value
-    #0 0x493c4b  (/home/liu/Desktop/note/C++/Cpp-Weekly/Sanitizers/a.out+0x493c4b)    #1 0x7f101a44ea86  (/lib/x86_64-linux-gnu/libc.so.6+0x21a86)
+    #0 0x493c4b  (/home/liu/Desktop/note/C++/Cpp-Weekly/Sanitizers/a.out+0x493c4b)
+    #1 0x7f101a44ea86  (/lib/x86_64-linux-gnu/libc.so.6+0x21a86)
     #2 0x41d329  (/home/liu/Desktop/note/C++/Cpp-Weekly/Sanitizers/a.out+0x41d329)
 
 SUMMARY: MemorySanitizer: use-of-uninitialized-value (/home/liu/Desktop/note/C++/Cpp-Weekly/Sanitizers/a.out+0x493c4b)
@@ -166,3 +167,6 @@ $ MSAN_SYMBOLIZER_PATH=/usr/lib/llvm-4.0/bin/llvm-symbolizer ./a.out
 SUMMARY: MemorySanitizer: use-of-uninitialized-value /home/liu/Desktop/note/C++/Cpp-Weekly/Sanitizers/memory.cpp:14:8 in main
 Exiting
 ```
+
+## 总结
+善用编译器提供的编译选项`-fsanitize=memory`和`-fsanitize=memory`，它们能帮助我们快速地找到代码中错误在哪
