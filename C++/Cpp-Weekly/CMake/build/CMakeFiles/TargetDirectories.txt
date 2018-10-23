@@ -1,0 +1,3 @@
+/home/liu/Desktop/note/C++/Cpp-Weekly/CMake/build/CMakeFiles/rebuild_cache.dir
+/home/liu/Desktop/note/C++/Cpp-Weekly/CMake/build/CMakeFiles/intro.dir
+/home/liu/Desktop/note/C++/Cpp-Weekly/CMake/build/CMakeFiles/edit_cache.dir
