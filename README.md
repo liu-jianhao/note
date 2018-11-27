@@ -4,12 +4,12 @@
 2. leetcode
 3. 《程序员代码面试指南 IT名企算法与数据结构题目最优解》
     + [C++版](https://github.com/liu-jianhao/Interview)
-4. 《剑指offer》
+4. [《剑指offer》](https://github.com/zhedahht/CodingInterviewChinese2)
 
 # C++
 ## 学习资料
 1. 《STL源码剖析》
-2.  [《Effective Modern C++》](https://github.com/liu-jianhao/Effective-Modern-Cpp)
+2. [《Effective Modern C++》](https://github.com/BartVandewoestyne/Effective-Modern-Cpp)
 3. 《C++标准库》
 4. 《Boost程序库完全开发指南：深入C++准标准库》
 5. 《深度探索C++对象模型》
@@ -23,7 +23,7 @@
 
 # Linux
 ## 学习资料
-1. 《Unix/Linux编程实践教程》
+1. [《Unix/Linux编程实践教程》](https://github.com/liu-jianhao/linux_learing)
 2. 《Linux/UNIX系统编程手册》
 3. 《Linux环境编程：从应用到内核》
 
@@ -45,6 +45,7 @@
 1. 《TCP/IP详解卷1：协议》
 2. 《计算机网络++自顶向下方法.原书第6版》
 3. 《网络编程卷一》
+    + [chatRoom](https://github.com/liu-jianhao/chatRoom)
 
 # 数据库
 ## 学习资料
@@ -60,6 +61,8 @@
 ## 学习资料
 1. 《大规模分布式存储系统》
 2. 《分布式实时处理系统 原理、架构与实现》
+3. 《分布式系统概念与设计》
+4. [《数据密集型应用系统设计》](https://github.com/Vonng/ddia)
 ## 课程
 1. [MIT6.824](http://nil.csail.mit.edu/6.824/2016/schedule.html)
     + [课程实验](https://github.com/liu-jianhao/Distributed-Systems)
@@ -74,6 +77,10 @@
 1. 《Go语言程序设计》
 2. 《Go Web编程》
     + [chitchat](https://github.com/liu-jianhao/chitchat)
+
+# Rust
+1. [视频](https://www.bilibili.com/video/av36881102)
+    +[源码](https://github.com/liu-jianhao/Rust_learning)
 
 # Git
 1. 《精通Git》
