@@ -51,3 +51,34 @@ gunc4.9复杂难理解
 
 ### list 迭代器
 ![](https://img-blog.csdnimg.cn/2018121423331916.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlc3Ricm9va2xpdQ==,size_16,color_FFFFFF,t_70)
+
+
+## 迭代器
+![](https://img-blog.csdnimg.cn/20181215085359788.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlc3Ricm9va2xpdQ==,size_16,color_FFFFFF,t_70)
+上面的rotate算法需要知道迭代器的迭代器的三种类型。
++ value_type:元素类型
++ difference_type:距离类型
++ iterator_category:迭代器类型
+
+![](https://img-blog.csdnimg.cn/20181215090102728.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlc3Ricm9va2xpdQ==,size_16,color_FFFFFF,t_70)
+
+问题：如果迭代器不是一个类，而是一个原生指针，要怎么知道这些type呢？
+答：这就需要萃取机了。
+
+### traits
+它必须能区别迭代器是一个类还是一个指针。
+
+![](https://img-blog.csdnimg.cn/20181215090426179.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlc3Ricm9va2xpdQ==,size_16,color_FFFFFF,t_70)
+
+
+利用模板特化，可以萃取出传入的类型是迭代器还是指针：
+![](https://img-blog.csdnimg.cn/20181215090935435.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlc3Ricm9va2xpdQ==,size_16,color_FFFFFF,t_70)
+
+
+迭代器萃取机只是萃取机的一个部分，还有很多其它类型的萃取机：
++ type traits
++ char traits
++ allocator traits
++ pointer traits
+...
+
