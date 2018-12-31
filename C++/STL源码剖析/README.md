@@ -1,3 +1,20 @@
+目录：
++ [分配器](##分配器)
++ [List](##list)
++ [Traits](###traits)
++ [迭代器](###迭代器)
++ [Vector](##vector)
++ [array](##array)
++ [Deque](##deque)
+    + [queue&stack](###queue&stack)
++ [红黑树](##红黑树)
+    + [Set](###set)
+    + [Map](###map)
++ [hashtable](##hashtable)
++ [算法](##算法)
++ [仿函数](##仿函数)
++ [tuple](##tuple)
+
 
 # Part1
 ## STL六大部件
@@ -82,3 +99,117 @@ gunc4.9复杂难理解
 + pointer traits
 ...
 
+
+## vector
++ 二倍增长
+    + 需要拷贝，即需要析构和构造
+    + ![](https://img-blog.csdnimg.cn/20181215121321368.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlc3Ricm9va2xpdQ==,size_16,color_FFFFFF,t_70)
++ 三个指针
+    + start
+    + finish
+    + end_of_storage
+    + ![](https://img-blog.csdnimg.cn/20181215121402376.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlc3Ricm9va2xpdQ==,size_16,color_FFFFFF,t_70)
+
+
+
+## array
++ 为了享受算法，所以构造出这个类
++ 没有构造和析构函数
++ 数组存储
+
+## deque
+![](https://img-blog.csdnimg.cn/20181215171210549.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlc3Ricm9va2xpdQ==,size_16,color_FFFFFF,t_70)
+
+deque看上去是连续的，实际上是因为其迭代器的功劳：
++ cur指向当前元素
++ first指向当前指向的元素所在的那块buffer的头
++ last指向当前指向的元素所在的那块buffer的尾
++ node指向所在buffer在控制块(实际上是vector)的位置
+
+![](https://img-blog.csdnimg.cn/20181215172144255.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlc3Ricm9va2xpdQ==,size_16,color_FFFFFF,t_70)
+
+
+### queue&stack
++ 容器适配器
++ 以deque为默认的底层容器
++ 也可以以list为底层容器
++ stack可以以vector为底层容器，queue不可以（pop会有问题）
++ stack和queue都不可以set或map作为底层容器
++ 不支持迭代器，也不支持遍历
+
+
+## 红黑树
+![](https://img-blog.csdnimg.cn/20181216085236528.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlc3Ricm9va2xpdQ==,size_16,color_FFFFFF,t_70)
+
+### 标准库中的红黑树
+![](https://img-blog.csdnimg.cn/20181216085739306.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlc3Ricm9va2xpdQ==,size_16,color_FFFFFF,t_70)
+
+模板参数：
++ Key：红黑树节点中的某个值，用以排序
++ Value：红黑树节点的类型
++ KeyOfValue：怎么取出Value中的Key
++ Compare：怎么比较Key的大小
++ Alloc：默认alloc分配器
+
+### set
+[](https://img-blog.csdnimg.cn/20181216122954870.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlc3Ricm9va2xpdQ==,size_16,color_FFFFFF,t_70)
+
+可以遍历，但不可以修改
+
+set源代码：
+![](https://img-blog.csdnimg.cn/20181216123513781.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlc3Ricm9va2xpdQ==,size_16,color_FFFFFF,t_70)
+注意到上面的迭代器是const的，所以不可以修改其中的元素
+
+### map
+![](https://img-blog.csdnimg.cn/20181216123513781.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlc3Ricm9va2xpdQ==,size_16,color_FFFFFF,t_70)
+
+可以遍历，但不可以修改key，但可以修改value
+
+map源码：
+![](https://img-blog.csdnimg.cn/20181216123938870.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlc3Ricm9va2xpdQ==,size_16,color_FFFFFF,t_70)
++ select1st：作用是从value中选择第一个元素为key。
++ 注意pair中的第一个元素为const，所以key不可以修改
+
+
+multimap不支持[]运算符，只有map支持
+![](https://img-blog.csdnimg.cn/20181216124755163.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlc3Ricm9va2xpdQ==,size_16,color_FFFFFF,t_70)
+注意上面的lower_bound。
+
+
+## hashtable
+![](https://img-blog.csdnimg.cn/20181216130925831.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlc3Ricm9va2xpdQ==,size_16,color_FFFFFF,t_70)
+
+
+
+## 算法
+算法看不见容器，他所需要的一切信息都必须从迭代器取得。
+
+### 五种迭代器的分类：
+![](https://img-blog.csdnimg.cn/20181217133935518.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlc3Ricm9va2xpdQ==,size_16,color_FFFFFF,t_70)
+
++ random_access_iterator_tag:array,vector,deque
++ bidrection_iterator_tag:list,set,map,multiset,multimap
++ forward_iterator_tag:forward_list,unordered_*
+
+
+为什么迭代器类型要用类？
++ 方便函数重载，对于不同的迭代器类型有不同的操作
++ 各种迭代器是继承关系，不同操作就可以不用针对每一个类型都写
+
+以copy为例：
+![](https://img-blog.csdnimg.cn/20181218133730549.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlc3Ricm9va2xpdQ==,size_16,color_FFFFFF,t_70)
+
+### 算法例子
+本身容器有的算法，就不要用全局的算法。
+![](https://img-blog.csdnimg.cn/20181218150049174.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlc3Ricm9va2xpdQ==,size_16,color_FFFFFF,t_70)
+
+![](https://img-blog.csdnimg.cn/20181218150055804.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlc3Ricm9va2xpdQ==,size_16,color_FFFFFF,t_70)
+
+![](https://img-blog.csdnimg.cn/20181218150111727.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlc3Ricm9va2xpdQ==,size_16,color_FFFFFF,t_70)
+
+## 仿函数
+![](https://img-blog.csdnimg.cn/20181218151850714.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlc3Ricm9va2xpdQ==,size_16,color_FFFFFF,t_70)
+
+## tuple
+递归继承，类似于erlang的递归
+![](https://img-blog.csdnimg.cn/20181231233140202.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlc3Ricm9va2xpdQ==,size_16,color_FFFFFF,t_70)
