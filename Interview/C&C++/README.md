@@ -30,7 +30,7 @@
 ## 10. 如何防止c++头文件被重复引用
 可以使用ifndef或者program once，都可以。但是两者有一些区别。
 
-从兼容性上说，ifndfe更好，有些老的编译器可能不支持program once；
+从兼容性上说，ifndef更好，有些老的编译器可能不支持program once；
 
 此外，对于2个名字不同的头文件，但内容相同，ifndef还是可以鉴别出来，防止重复，program once 不行。
 

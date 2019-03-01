@@ -9,10 +9,11 @@
 # C++
 ## 学习资料
 1. 《STL源码剖析》
-2. [《Effective Modern C++》](https://github.com/BartVandewoestyne/Effective-Modern-Cpp)
+2. 《Effective C++》
 3. 《C++标准库》
 4. 《Boost程序库完全开发指南：深入C++准标准库》
 5. 《深度探索C++对象模型》
+6. [《Effective Modern C++》](https://github.com/BartVandewoestyne/Effective-Modern-Cpp)
 
 ## YouTube学习笔记
 1. [C++ Weekly](https://www.youtube.com/channel/UCxHAlbZQNFU2LgEtiqd2Maw)
@@ -46,6 +47,7 @@
 2. 《计算机网络++自顶向下方法.原书第6版》
 3. 《网络编程卷一》
     + [chatRoom](https://github.com/liu-jianhao/chatRoom)
+4. 《Linux多线程服务端编程》
 
 # 数据库
 ## 学习资料
@@ -53,6 +55,8 @@
 2. 《数据库系统基础教程》
 3. 《数据库系统实现》
 4. 《数据库系统概念》
+5. 《Redis设计与实现》
+
 ## 课程 
 1. [CMU 15-445 / 645](https://15445.courses.cs.cmu.edu/fall2017/schedule.html)
     + [课程实验](https://github.com/liu-jianhao/CMU-15-445)
@@ -63,9 +67,11 @@
 2. 《分布式实时处理系统 原理、架构与实现》
 3. 《分布式系统概念与设计》
 4. [《数据密集型应用系统设计》](https://github.com/Vonng/ddia)
+5. 《ZeroMQ:云时代极速消息通信库》
 ## 课程
 1. [MIT6.824](http://nil.csail.mit.edu/6.824/2016/schedule.html)
     + [课程实验](https://github.com/liu-jianhao/Distributed-Systems)
+2. [Raft&Paxos简单实现](https://github.com/liu-jianhao/Raft-Paxos-Sample)
 
 # 调试(GDB)
 ## 学习资料
