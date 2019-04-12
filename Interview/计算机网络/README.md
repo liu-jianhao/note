@@ -103,6 +103,8 @@ RFC建议的算法是在每个往返时间增加1个MSS，例如发了16个MSS�
 假如一段时间后没有收到确认，就认定包已经丢失了，只能重传了，这个过程称为超时重传
 从发送原始包到重传该包的这段时间称为RTO(通过某个公式算出来)
 
+![](https://img-blog.csdnimg.cn/201904112305519.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlc3Ricm9va2xpdQ==,size_16,color_FFFFFF,t_70)
+
 重传之后的拥塞窗口该怎么调整？RFC建议把拥塞窗口降到1个MSS，然后再次进入慢启动过程。
 这时临界窗口值就有参考依据了，RFC5681认为定为发生拥塞时没被确认的数据量的1/2，但不能小于2个MSS。
 比如发了19个包出去，但只有3个包收到确认，那么临界窗口值就被定为16个包携带的数据量的1/2
@@ -115,6 +117,8 @@ RFC建议的算法是在每个往返时间增加1个MSS，例如发了16个MSS�
 如果在拥塞避免阶段发生了快速重传，是否需要像快速重传那样处理拥塞窗口？没必要。既然后续的包都到达了，说明网络并不拥塞
 RFC5681建议临界窗口值应该设为发生拥塞时还没被确认的数据量的1/2，然后将拥塞窗口设置为临界窗口值增加3个MSS，
 继续保留在拥塞避免阶段，这个过程称为快速恢复
+
+![](https://img-blog.csdnimg.cn/20190411230556825.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlc3Ricm9va2xpdQ==,size_16,color_FFFFFF,t_70)
 
 如果丢的包不止一个？比如2号和3号包丢失，1、4、5、6、7、8号都到达了接收方并触发Ack2。
 对于发送方来说只能通过Ack2知道2号包丢失了，但并不知道还有哪些包丢失了，接下来该怎么传？
