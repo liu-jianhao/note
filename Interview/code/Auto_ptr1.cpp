@@ -20,7 +20,7 @@ private:
     T* m_ptr;
 };
 
-class Resource
+final class Resource
 {
 public:
     Resource() { cout << "Resource acquired!" << endl; }
