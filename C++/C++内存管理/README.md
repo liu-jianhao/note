@@ -29,6 +29,8 @@ malloc调用失败，会调用`new handler`，这个函数是你设定的。
 
 ### placement new
 placement new 不分配内存，相当于调用构造函数
+
+标准库中basic_string就重载了operator new：new(extra)
 ![](https://img-blog.csdnimg.cn/20190103175723610.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlc3Ricm9va2xpdQ==,size_16,color_FFFFFF,t_70)
 
 
