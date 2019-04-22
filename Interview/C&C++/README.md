@@ -79,9 +79,46 @@ static函数与普通函数区别：static函数在内存中只有一份，普�
 3. 汇编： main.s -> main.o （可重定位的目标文件）
 4. 链接： main.o -> prog （可执行目标文件）
 
+## 没有main函数
+程序的真正入口是_start函数，实际上main函数只是用户代码的入口,它会由系统库去调用,在main函数之前,系统库会做一些初始化工作,比如分配全局变量的内存,初始化堆、线程等,当main函数执行完后,会通过exit()函数做一些清理工作,用户可以自己实现_start函数：
+```c
+#include <stdio.h> 
+#include <stdlib.h> 
+_start(void) { 
+    printf("hello world!/n"); 
+    exit(0); 
+}
+```
+执行如下编译命令并运行:
+```shell
+$ gcc hello_start.c -nostartfiles -o hello_start
+$ ./hello_start 
+hello world! 
+```
+这里的 **-nostartfiles** 的功能是Do notuse the standard system startup files when linking,也就是不使用标准的startupfiles,但是还是会链接系统库,所以程序还是可以执行的
+
+也可以自己指定入口函数：
+```c
+#include <stdio.h> 
+#include <stdlib.h> 
+int nomain(){
+    printf("helloworld!/n"); 
+    exit(0); 
+} 
+```
+采用如下命令编译 
+```shell
+$ gcc hello_nomain.c -nostartfiles -e nomain -o hello_nomain  
+```
+其中-e选项可以指定程序入口符号， 对比hello_start的符号表发现只是将_start换成了nomain
+
+
 ## 快排优化
 1. 对于小数组而言， 快速排序比插入排序要慢， 所以在排序小数组时应该切换到插入排序，一般来说， 5到15间的任意值在多数情况下都能令人满意
 2. 三数取中法： 分别取出数组的最左端元素，最右端元素和中间元素， 在这三个数中取出中位数，作为基准元素
 
 ## memmove和memcopy
 他们的作用是一样的，唯一的区别是，当内存发生局部重叠的时候，memmove保证拷贝的结果是正确的，memcpy不保证拷贝的结果的正确。
+
+## 排序算法
+![](https://img-blog.csdnimg.cn/20190420172243819.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlc3Ricm9va2xpdQ==,size_16,color_FFFFFF,t_70)
