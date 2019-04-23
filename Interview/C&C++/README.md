@@ -122,3 +122,9 @@ $ gcc hello_nomain.c -nostartfiles -e nomain -o hello_nomain
 
 ## 排序算法
 ![](https://img-blog.csdnimg.cn/20190420172243819.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlc3Ricm9va2xpdQ==,size_16,color_FFFFFF,t_70)
+
+
+## C++内存管理
++ 静态区：保存自动全局变量和static变量（包括static全局和局部变量）。静态区的内容在整个程序的生命周期内都存在，有编译器在编译的时候分配（数据段（存储全局数据和静态数据）和代码段（可执行的代码/只读常量））。
++ 栈：保存局部变量。栈上的内容只在函数范围内存在，当函数运行结束的时候，这些内容也会自动销毁。其特点是效率高但是空间大小有限。
++ 堆：由malloc系列函数或者new操作符分配的内存。其生命周期由free和delete决定。在没有释放之前一直存在，直到函数结束。其特点是使用灵活，空间比较大，但容易出错。
