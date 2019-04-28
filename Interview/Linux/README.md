@@ -173,19 +173,73 @@ Window与Linux执行文件格式不同，在创建动态库的时候有一些差
 ![](https://img-blog.csdnimg.cn/20190425154028523.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlc3Ricm9va2xpdQ==,size_16,color_FFFFFF,t_70)
 + CPU访问的地址是虚拟地址，需要MMU进行虚拟地址到物理地址的转换
 + 页表是存储在主存中，如果是二级页表就需要访问两次主存，比较耗时
-+ 为了加快速度，TLB(块表)缓存了上一次虚拟地址到物理地址的页表项
++ 为了加快速度，**TLB**(快表)缓存了上一次虚拟地址到物理地址的页表项
 
 ![](https://img-blog.csdnimg.cn/20190425202721468.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlc3Ricm9va2xpdQ==,size_16,color_FFFFFF,t_70)
 + malloc -> brk -> sys_brk
-+ 在堆上分配内存也是虚拟内存 -> vma
-+ 缺页中断 -> 映射虚拟地址到物理地址
-+ 物理页面分为 匿名页面(没有关联任何文件的页面，如malloc分配的) 和 page cache(与文件有关)
++ 在堆上分配内存也是虚拟内存 -> **vma** 
++ **缺页中断** -> 映射虚拟地址到物理地址
++ 物理页面分为 **匿名页面**(没有关联任何文件的页面，如malloc分配的) 和 page cache(与文件有关)
 + 匿名页面和page cache 需要页面分配器分配
-+ slab分配器 -> 管理固定大小的分配，不用麻烦页面分配器
-+ 页面回收 -> 当系统内存低于某个水位的时候 **kswapd** (用于页面回收的内核线程)会被唤醒，去扫描LRU链表(匿名页面和page cache)
++ **slab分配器** -> 管理固定大小的分配，不用麻烦页面分配器
++ **页面回收** -> 当系统内存低于某个水位的时候 **kswapd** (用于页面回收的内核线程)会被唤醒，去扫**LR**链表(匿名页面和page cache)
 + KSM:合并匿名页面，释放一些物理页面
 + Huge Page:大页面，减少TLB(块表)miss 的次数
 + 内存规整:处理内存碎片化
+
+## Linux进程管理
+### 进程控制块 task_struct
++ 进程属性：
+    + state：用来记录进程的状态
+    + pid：进程唯一的标识符
+    + flag：描述进程属性的一些标志位
+    + exit_code 和 exit_signal：用来存放进程退出值和终止信号，这样父进程可以知道子进程的退出原因
+    + pdeath_signal：父进程消亡时发出的信号
+    + comm：存放可执行程序的名称
+    + real_cred 和 cred：用来存放进程的一些认证信息
+
++ 调度管理：
+    + prio：保存着进程动态优先级，是调度类考虑的优先级
+    + static_prio：静态优先级。内核不存储nice值，取而代之的是static_prio
+    + normal_prio：基于static_prio和调度策略计算出来的优先级
+    + rt_prio：实时进程的优先级
+    + sched_class：调度类
+    + se：普通进程调度实体
+    + rt：实时进程调度实体
+    + dl：deadline进程调度实体
+    + policy：进程的类型，比如普通进程还是实时进程
+    + cpus_allowed：进程可以在那几个CPU上运行    
+    
++ 进程间关系：
+    + real_parent：指向当前进程的父进程的task_struct数据结构
+    + children：指向当前进程的子进程的链表
+    + sibling：指向当前进程的兄弟进程的链表
+    + group_leader：进程组的组长    
+
++ 内存管理与文件管理：
+    + mm：指向进程多管理的内存的一个总的抽象的数据结构mm_struct
+    + fs：保存一个指向文件系统信息的指针
+    + files：保存一个指向进程的文件描述符表的指针
+
+总结：
++ 进程的运行状态
++ 程序计数器
++ CPU寄存器，保存上下文
++ 内存管理信息
++ 统计信息
++ 文件相关信息　
+
+### 进程的创建 fork 0.11版
++ sys_fork
+    + find_empty_process
+        + 找到task数组(task_struct，全局，最大64)中空闲的pid
+    + copy_process
+        + get_free_page
+            + 分配4k内存
+            + 把task_struct放进去
+        + 初始化task_struct成员
+        + copy_mem
+            + 拷贝父进程的虚拟地址空间
 
 
 ## ctrl-c...
