@@ -115,3 +115,42 @@ int main()
 ## item7：千万不要重载&&，||和，操作符
 
 ## item8：了解各种不同意义的new和delete
+
+## item9：利用析构函数避免泄露资源
+
+## item10：在构造函数内阻止资源泄露
+构造函数可能会发生异常，而C++只会析构已经构造完成的对象，即对象只有在其构造函数执行完毕才算是完全构造
+
+因此C++不自动清理
+
+## item11：禁止异常流出析构函数之外
+
+
+## item17：考虑使用lazy evaluatino
+1. 引用计数
+2. 区分读和写
+3. 缓式取出
+4. 表达式缓评估
+
+## item19：了解临时对象的来源
+两种情况：
+1. 隐式类型转换
+```cpp
+#include <iostream>
+using namespace std;
+
+// 报错
+void uppercasify(string& str){}
+
+int main(){
+    char subtleBookPlug[] = "Effective C++";
+    string s;
+    uppercasify(subtleBookPlug);
+}
+```
+不可以将对象传递给一个  reference to non-const 的参数，假设编译器为此产生一个临时对象，
+然后此临时对象被传递给 uppercasify，这个函数的实参 subtleBookPlug 并未收到影响，只有临时对象产生影响
+
+而 reference-to-const 参数则不需要承担此问题(C++ Primer 第五版 P192)
+
+2. 函数返回对象
