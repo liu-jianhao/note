@@ -224,6 +224,69 @@ visual C++编译器将这种类型的段称为"COMDAT"
 
 函数级别链接：让所有函数都单独保存到一个段里，当链接器需要某个函数时，它就将它合并到输出文件中，对于那些没有用的函数则将它们抛弃。可以减少空间浪费，但会减慢编译和链接过程，因为链接器需要计算各个函数之间的依赖关系。gcc："-ffunction-sections"、"-fdata-sections"，这两个选项的作用就是将每个函数或变量分别保持到独立的段中
 
+## 动态链接
+### 为什么需要动态链接
++ 静态链接浪费空间
++ 任何模块更新，整个程序需要重新链接
++ 动态链接不对组成程序的目标文件进行链接，等到程序要运行时才进行链接
++ Linux中一般是以".so"文件为扩展名的一些文件，Windows中则以".dll"为扩展名的文件
+
+### 例子
+```c
+// Program1.c
+#include "Lib.h"
+int main() {
+    foobar(1);
+    return 0;
+}
+
+// Program2.c
+#include "Lib.h"
+int main() {
+    foobar(2);
+    return 0;
+}
+
+// Lib.c
+#include <stdio.h>
+void foobar(int i) {
+    printf("Printing from Lib.so %d\n", i);
+}
+
+// Lib.h
+#ifndef LIB_H
+#define LIB_H
+
+void foobar(int i);
+
+#endif
+```
+
+```shell
+gcc -fPIC -shared -o Lib.so Lib.c
+```
++ `shared`表示共享对象
+然后分别编译两个c文件：
+```shell
+gcc -o Program1 Program1.c ./Lib.so
+gcc -o Program2 Program2.c ./Lib.so
+```
+
+图示过程：
+![](https://img-blog.csdnimg.cn/20190524223507682.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlc3Ricm9va2xpdQ==,size_16,color_FFFFFF,t_70)
+
+与静态链接不同的地方就是在`Program1.o`被链接成可执行文件的这一步：
++ 在静态链接中，这一步链接过程会把`Program1.o`和`Lib.o`链接到一起，并且产生输出可执行文件`Program1`。
++ 而动态链接中，`Lib.o`没有被链接进来，链接输入的目标文件只有`Program1.o`(先忽略C语言运行库)，参加链接的还有`Lib.so`
+    + 当`Program1.c`被编译成`Program1.o`时，编译器还不知道`foobar()`函数的地址，当链接器将`Program1.o`链接成可执行文件时，这时候链接器必须确定`foobar()`函数的性质。如果`foobar()`是一个定义与其他静态目标文件模块中的函数，那么链接器将会按照静态链接的规则，如果`foobar()`是一个定义在某个动态共享对象中的函数，那么链接器会将这个符号的引用标记为一个动态链接的符号，不对它进行地址重定位，把这个过程留到装载时再进行
+    + 链接器如何知道`foobar`的引用是一个静态符号还是一个动态符号？
+    + `Lib.so`中保存了完整的符号信息，把`Lib.so`也作为链接的输入文件之一，链接器在解析符号时就知道：`foobar`是一个定义在`Lib.so`的动态符号，这样链接器就可以对`foobar`的引用做特殊的处理，使它成为一个对动态符号的引用
+    + `Lib.so`与`Program1`都被操作系统用同样的方法映射至进程的虚拟地址空间
+    + `Program1`除了使用`Lib.so`之外，还用到了动态链接形式的C语言运行时库`libc-2.6.1.so`
+    + 还有一个共享对象就是`ld-2.6.so`，它是Linux下的动态链接器，动态链接器与普通对象一样被映射到了进程的地址空间，在系统开始运行`Program1`之前，首先会把控制权交给动态链接器，由它完成所有的链接工作以后再把控制权交给`Program1`，然后开始执行
+    + 共享对象的最终装载地址在编译时是不确定的，而是在装载时，装载器根据当前的地址空间的空闲情况，动态分配一块足够大小的虚拟地址空间给相应的共享对象
+
+
 ## 没有main函数
 程序的真正入口是_start函数，实际上main函数只是用户代码的入口,它会由系统库去调用,在main函数之前,系统库会做一些初始化工作,比如分配全局变量的内存,初始化堆、线程等,当main函数执行完后,会通过exit()函数做一些清理工作,用户可以自己实现_start函数：
 ```c
