@@ -154,3 +154,31 @@ int main(){
 而 reference-to-const 参数则不需要承担此问题(C++ Primer 第五版 P192)
 
 2. 函数返回对象
+
+
+## iterm20：协助完成返回值优化RVO
+如果以 by-value 方式返回对象，背后隐藏的构造好析构函数都将无法消除
+
+返回 构造函数参数 以取代对象，例如
+```cpp
+const Rational operator* (const Rational& lhs, const Rational& rhs) {
+    return Rational(lhs.numerator() * rhs.numerator(), lhs.denominator() * rhs.denominator());
+}
+```
+C++允许编译器将临时对象优化，使他们不存在，于是可以这样调用 `operator*`：
+```cpp
+Rational a = 10；
+Rational b(1, 2);
+
+Rational c = a * b;
+```
+
+编译器可以将表达式所定义的对象构造与 c 的内存内
+
+最优的做法是用 inline
+
+
+## item21：利用重载避免隐式类型转换
+C++的重载操作符中的参数必须至少有一个用户定制类型的自变量
+
+
