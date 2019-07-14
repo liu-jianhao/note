@@ -199,7 +199,7 @@ int Partition(T data[], int length, int start, int end)
     int small = start - 1;
     for(int i = start; i < end; ++i)
     {
-        if(data[i] < data[end])
+        if(data[i] < bound)
         {
             ++small;
             if(small != i)
